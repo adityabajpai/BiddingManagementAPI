@@ -1,0 +1,300 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: Bidding
+  description: Bidding Management System
+host: 'localhost:3000'
+basePath: /
+tags: 
+- name: Bidding
+  description: Bidding Management
+schemes: 
+- http
+- https
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /:
+    get:
+      summary: Check Server
+      description: To check Server
+      operationId: checkServer
+      responses:
+        200:
+          description: OK
+  /customers/Register:
+    post:
+      tags:
+      - User
+      summary: Add details of user
+      description: Enter the details of user
+      parameters:
+      - name: body
+        in: body
+        description: Details of user want to register
+        required: true
+        schema: 
+         $ref: '#/definitions/UserRegister'
+      responses:
+        200:
+          description: User added successfully
+        209:
+          description: Email already registered
+        500:
+          description: Error while encryption
+  /customers/Login:
+    post:
+      tags:
+      - User
+      summary: Login the user
+      description: Enter the details of user
+      parameters:
+      - name: body
+        in: body
+        description: Details of user want to register
+        required: true
+        schema: 
+         $ref: '#/definitions/UserLogin'
+      responses:
+        200:
+          description: OK
+        404:
+          description: Email not found
+        403:
+          description: Incorrect Password
+        401:
+          description: Auth Failed
+    x-swagger-router-controller: router
+  /customers/User/{userId}:
+    patch:
+      tags:
+      - User
+      summary: Update the details of user
+      description: To update the details of user
+      operationId: upadateUser
+      parameters:
+      - name: userId
+        in: path
+        description: ID of user to update
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Details of user want to update
+        required: true
+        schema: 
+         $ref: '#/definitions/UserUpdate'
+      responses:
+        200:
+          description: User Updated
+        500:
+          description: Internal Server Error
+        404:
+          description: User Not Found
+  /customers/User/{Id}:
+    delete:
+      tags:
+      - User
+      summary: Delete the user
+      description: Delete the details of an individual user
+      operationId: deleteUser
+      parameters:
+      - name: Id
+        in: path
+        description: ID of user to update
+        required: true
+        type: string
+      responses:
+        200:
+          description: User deleted
+        500:
+          description: Internal Server Error
+        404:
+          description: User Not Found
+
+
+  /products/Product:
+    post:
+      tags:
+      - Product
+      summary: Add details of product
+      description: Enter the details of product
+      consumes:
+        - multipart/form-data
+        - application/json
+      parameters:
+      - in: formData
+        name: product_img
+        type: file
+        description: The file to upload.
+      - name: body
+        in: body
+        description: Details of product user want to add
+        required: true
+        schema: 
+         $ref: '#/definitions/Product'
+      responses:
+        200:
+          description: product added successfully
+        500:
+          description: Internal Server Error
+  /products/Products:
+    get:
+      tags:
+      - Product
+      summary: Get all the products
+      description: To get the details of all product
+      operationId: getProduct
+      parameters: []
+      responses:
+        200:
+          description: Retrieved successfully
+        500:
+          description: Internal Server Error
+    x-swagger-router-controller: router
+  /products/Product/{productId}:
+    patch:
+      tags:
+      - Product
+      summary: Update the details of product
+      description: To update the details of product
+      operationId: upadateProduct
+      parameters:
+      - name: productId
+        in: path
+        description: ID of product to update
+        required: true
+        type: string
+      - name: body
+        in: body
+        description: Details of product want to update
+        required: true
+        schema: 
+         $ref: '#/definitions/ProductUpdate'
+      responses:
+        200:
+          description: Product Updated
+        500:
+          description: Internal Server Error
+        404:
+          description: Product Not Found
+  /products/Product/{Id}:
+    delete:
+      tags:
+      - Product
+      summary: Delete the product
+      description: Delete the details of an individual product
+      operationId: deleteProduct
+      parameters:
+      - name: Id
+        in: path
+        description: ID of product to update
+        required: true
+        type: string
+      responses:
+        200:
+          description: Product deleted
+        500:
+          description: Internal Server Error
+        404:
+          description: Product Not Found
+    
+definitions:
+  UserRegister:
+    type: object
+    required:
+    - user_email
+    - user_pswd
+    - user_address
+    - user_address2
+    - user_city
+    - user_stateDetails
+    - user_mobile
+    - user_type
+    properties:
+      user_email:
+        type: string
+      user_pswd:
+        type: string
+      user_address:
+        type: string
+      user_address2:
+        type: string
+      user_city:
+        type: string
+      user_stateDetails:
+        type: string
+      user_mobile:
+        type: string
+      user_type:
+        type: string
+  UserLogin:
+    type: object
+    required:
+    - user_email
+    - user_pswd
+    properties:
+      user_email:
+        type: string
+      user_pswd:
+        type: string
+  UserUpdate:
+    type: object
+    required:
+      - user_email
+      - user_pswd
+      - user_address
+      - user_address2
+      - user_city
+      - user_stateDetails
+      - user_mobile
+      - user_type
+    properties:
+      user_email:
+        type: string
+      user_address:
+        type: string
+      user_address2:
+        type: string
+      user_city:
+        type: string
+      user_stateDetails:
+        type: string
+      user_mobile:
+        type: string
+      user_type:
+        type: string
+  Product:
+    type: object
+    required:
+      - product_name
+      - product_bidding_price
+      - product_description
+      - product_bidding_EndDate
+    properties:
+      product_name:
+        type: string
+      product_bidding_price:
+        type: string
+      product_description:
+        type: string
+      product_bidding_EndDate:
+        type: string
+  ProductUpdate:
+    type: object
+    required:
+      - product_name
+      - product_bidding_price
+      - product_description
+      - product_bidding_EndDate
+    properties:
+      product_name:
+        type: string
+      product_bidding_price:
+        type: string
+      product_description:
+        type: string
+      product_bidding_EndDate:
+        type: string

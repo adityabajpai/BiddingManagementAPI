@@ -10,7 +10,7 @@ function login(req){
             if(user.length<1){
                 console.log('user not found');
                 const msg = {
-                    status: 401,
+                    status: 404,
                     message: 'user not found'
                 }
                 reject(msg)
@@ -21,7 +21,7 @@ function login(req){
                         // mail id exist but some error occurred
                         console.log('incorrect password');
                         const msg = {
-                            status: 401,
+                            status: 403,
                             message: 'incorrect password'
                         }
                         reject(msg)

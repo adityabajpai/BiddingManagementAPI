@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const User = require('../../Model/User');
 
-function register(req){
+function register(req, res){
     return new Promise(function(resolve, reject){
         console.log("user_email",req.body.user_email);
         User.find({user_email: req.body.user_email})
@@ -12,11 +12,14 @@ function register(req){
             console.log("length",user.length);
             if(user.length>=1){
                 console.log("email already registered");
-                const msg = {
-                    status: 209,
-                    message: 'Email already registered'
-                }
-                reject(msg);
+                // const msg = {
+                //     status: 209,
+                //     message: 'Email already registered'
+                // }
+                res.status(209).json({
+                    message: 'Email already register'
+                })
+                reject("Failed");
             }
             else{
                 console.log("new mail id");
@@ -26,12 +29,10 @@ function register(req){
                     console.log("user", totalUser);
                     bcrypt.hash(req.body.user_pswd,10,(err,hash)=>{
                         if(err){
-                            console.log("error during encryption");
-                            const msg = {
-                                status: 500,
-                                message: 'error during encryption'
-                            }
-                            reject(msg);
+                            res.status(500).json({
+                                message: 'Internal Server Error'
+                            })
+                            reject("Failed");
                         }
                         else{
                             console.log("new user created");
@@ -52,11 +53,29 @@ function register(req){
                             console.log("new_user",user);
                             user.save()
                             .then(result=>{
-                                resolve(result)
+                                res.status(200).json({
+                                    message: 'User Register Successfully',
+                                    user: {
+                                        _id: result._id,
+                                        user_id: result.user_id,
+                                        user_email: result.user_email,
+                                        user_pswd: result.user_pswd,
+                                        user_address: result.user_address,
+                                        user_address2: result.user_address2,
+                                        user_city: result.user_city,
+                                        user_stateDetails: result.user_stateDetails,
+                                        user_mobile: result.user_mobile,
+                                        user_totalBids: result.user_totalBids,
+                                        user_totalBidWins: result.user_totalBidWins,
+                                        user_type: result.user_type
+                                    }
+                                })
+                                resolve("success")
                             })
                             .catch(err=>{
                                 console.log(err);
-                                reject(err);
+                                res.send(err)
+                                reject("Failed")
                             })
                         }
                     })
@@ -65,7 +84,7 @@ function register(req){
         })
         .catch(err=>{
             console.log(err);
-            reject(err);
+            reject("Failed");
         })
     })
 }

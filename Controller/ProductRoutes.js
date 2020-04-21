@@ -33,7 +33,7 @@ router.post('/Product', upload.single('product_img'), (req,res)=>{
     })
 })
 
-router.get('/Product',(req,res)=>{
+router.get('/Products',(req,res)=>{
     var result = getProduct(req, res);
 
     result
@@ -54,10 +54,21 @@ router.get('/Product',(req,res)=>{
 router.patch('/Product/:productId',(req,res)=>{
     console.log("updateProduct");
     console.log(req.params.productId);
-    console.log(req);
+    var result = updateProduct(req);
+    result
+    .then(product=>{
+        console.log("success 1");
+        res.send(product)
+    })
+    .catch(err=>{
+        res.status(500).json({
+            error: err
+        })
+    })
+    
 })
 
-router.delete('/Product/:productId',(req,res)=>{
+router.delete('/Product/:Id',(req,res)=>{
     console.log("deleteProduct");
     var result = deleteProduct(req);
 
