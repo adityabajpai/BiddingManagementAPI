@@ -123,18 +123,19 @@ paths:
       description: Enter the details of product
       consumes:
         - multipart/form-data
+      produces:
         - application/json
       parameters:
-      - in: formData
-        name: product_img
-        type: file
-        description: The file to upload.
       - name: body
         in: body
         description: Details of product user want to add
         required: true
         schema: 
          $ref: '#/definitions/Product'
+      - in: formData
+        name: product_img
+        type: file
+        description: The file to upload.
       responses:
         200:
           description: product added successfully
@@ -300,7 +301,6 @@ definitions:
     type: object
     required:
       - user_email
-      - user_pswd
       - user_address
       - user_address2
       - user_city

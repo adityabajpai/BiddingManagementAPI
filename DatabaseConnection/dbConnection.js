@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 
-const url = 'mongodb+srv://Bidding:Bidding@cluster0-ki6qp.mongodb.net/test?retryWrites=true&w=majority';
+const url = process.env.url;
 
 function mongoDBConnection(){
     console.log("hello");
+    console.log(process.env.url);
     
     return new Promise(function(resolve, reject){
         mongoose.connect(url, {
