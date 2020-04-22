@@ -4,6 +4,9 @@ const router = express.Router();
 var date = new Date(Date.now());
 var todayDate = date.toLocaleDateString();
 
+// auto run api at the end of day to save all the product whose bidding end date is gone then save the maximum final bid and 
+// allocate that bid to user and remove that particular product from the list of all products
+
 function removeProduct() {
     console.log("remove Product");
     

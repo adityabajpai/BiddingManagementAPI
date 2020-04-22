@@ -41,10 +41,6 @@ const userSchema = mongoose.Schema({
     user_totalBidWins: {
         type: String,
         require: true
-    },
-    user_type: {
-        type: String,
-        require: true
     }
 })
 

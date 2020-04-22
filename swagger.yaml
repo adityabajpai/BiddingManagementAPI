@@ -103,7 +103,7 @@ paths:
       parameters:
       - name: Id
         in: path
-        description: ID of user to update
+        description: ID of user to delete
         required: true
         type: string
       responses:
@@ -200,6 +200,65 @@ paths:
           description: Internal Server Error
         404:
           description: Product Not Found
+  
+
+  /bids/Bid:
+    post:
+      tags:
+      - Bid
+      summary: Post bid corresponding a product
+      description: Enter the details of regarding bid
+      parameters:
+      - name: body
+        in: body
+        description: Details of bid user want to put
+        required: true
+        schema: 
+         $ref: '#/definitions/Bid'
+      responses:
+        200:
+          description: bid posted successfully
+        500:
+          description: Internal Server Error
+  /bids/Bids/{productId}:
+    get:
+      tags:
+      - Bid
+      summary: Get all the bids of a product
+      description: To get the details of all bids of a product
+      operationId: getBid
+      parameters:
+      - name: productId
+        in: path
+        description: ID of product for which to get all bid
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved successfully
+        500:
+          description: Internal Server Error
+    x-swagger-router-controller: router
+
+  /bids/Bid/{Id}:
+    get:
+      tags:
+      - Bid
+      summary: Get the maximum bid of a product
+      description: To get the maximum of all bids of a product
+      operationId: getMaxBid
+      parameters:
+      - name: Id
+        in: path
+        description: ID of product for which to get maximum bid
+        required: true
+        type: string
+      responses:
+        200:
+          description: Retrieved successfully
+        500:
+          description: Internal Server Error
+    x-swagger-router-controller: router
     
 definitions:
   UserRegister:
@@ -212,7 +271,6 @@ definitions:
     - user_city
     - user_stateDetails
     - user_mobile
-    - user_type
     properties:
       user_email:
         type: string
@@ -227,8 +285,6 @@ definitions:
       user_stateDetails:
         type: string
       user_mobile:
-        type: string
-      user_type:
         type: string
   UserLogin:
     type: object
@@ -250,7 +306,6 @@ definitions:
       - user_city
       - user_stateDetails
       - user_mobile
-      - user_type
     properties:
       user_email:
         type: string
@@ -263,8 +318,6 @@ definitions:
       user_stateDetails:
         type: string
       user_mobile:
-        type: string
-      user_type:
         type: string
   Product:
     type: object
@@ -297,4 +350,20 @@ definitions:
       product_description:
         type: string
       product_bidding_EndDate:
+        type: string
+  Bid:
+    type: object
+    required:
+      - tenderer_email
+      - bidder_email
+      - bid_price
+      - product_id
+    properties:
+      tenderer_email:
+        type: string
+      bidder_email:
+        type: string
+      bid_price:
+        type: string
+      product_id:
         type: string

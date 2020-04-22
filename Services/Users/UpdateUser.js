@@ -12,7 +12,6 @@ function updateUser(req) {
             user_city: req.body.user_city,
             user_stateDetails: req.body.user_stateDetails,
             user_mobile: req.body.user_mobile,
-            user_type: req.body.user_type
         }
         User.updateOne({_id: id}, {$set: updateUser})
         .exec()

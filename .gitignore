@@ -1,3 +1,4 @@
 "sendgrid.env" 
 /node_modules
 /sendgrid.env
+/nodemon.json

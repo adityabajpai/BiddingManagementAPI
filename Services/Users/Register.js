@@ -12,14 +12,14 @@ function register(req, res){
             console.log("length",user.length);
             if(user.length>=1){
                 console.log("email already registered");
-                // const msg = {
-                //     status: 209,
-                //     message: 'Email already registered'
-                // }
-                res.status(209).json({
-                    message: 'Email already register'
-                })
-                reject("Failed");
+                const error = {
+                    status: 209,
+                    message: 'Email already registered'
+                }
+                // res.status(209).json({
+                //     message: 'Email already register'
+                // })
+                reject(error);
             }
             else{
                 console.log("new mail id");
@@ -29,10 +29,14 @@ function register(req, res){
                     console.log("user", totalUser);
                     bcrypt.hash(req.body.user_pswd,10,(err,hash)=>{
                         if(err){
-                            res.status(500).json({
+                            const error = {
+                                status: 500,
                                 message: 'Internal Server Error'
-                            })
-                            reject("Failed");
+                            }
+                            // res.status(500).json({
+                            //     message: 'Internal Server Error'
+                            // })
+                            reject(error);
                         }
                         else{
                             console.log("new user created");
@@ -47,13 +51,13 @@ function register(req, res){
                                 user_stateDetails: req.body.user_stateDetails,
                                 user_mobile: req.body.user_mobile,
                                 user_totalBids: "0",
-                                user_totalBidWins: "0",
-                                user_type: req.body.user_type
+                                user_totalBidWins: "0"
                             })
                             console.log("new_user",user);
                             user.save()
                             .then(result=>{
-                                res.status(200).json({
+                                const message = {
+                                    status: 200,
                                     message: 'User Register Successfully',
                                     user: {
                                         _id: result._id,
@@ -66,16 +70,22 @@ function register(req, res){
                                         user_stateDetails: result.user_stateDetails,
                                         user_mobile: result.user_mobile,
                                         user_totalBids: result.user_totalBids,
-                                        user_totalBidWins: result.user_totalBidWins,
-                                        user_type: result.user_type
-                                    }
-                                })
-                                resolve("success")
+                                        user_totalBidWins: result.user_totalBidWins
+                                    } 
+                                }
+                                // res.status(200).json({
+                                    
+                                // })
+                                resolve(message)
                             })
                             .catch(err=>{
                                 console.log(err);
-                                res.send(err)
-                                reject("Failed")
+                                const error = {
+                                    status: 500,
+                                    err: err
+                                }
+                                // res.send(err)
+                                reject(error)
                             })
                         }
                     })
@@ -83,8 +93,12 @@ function register(req, res){
             }
         })
         .catch(err=>{
-            console.log(err);
-            reject("Failed");
+            const error = {
+                status: 500,
+                err: err
+            }
+            // res.send(err)
+            reject(error)
         })
     })
 }

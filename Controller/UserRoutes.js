@@ -1,9 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const jsonwebtoken = require('jsonwebtoken');
-const mongoose = require('mongoose');
 const router = express.Router();
-const User = require('../Model/User');
 const register = require('../Services/Users/Register');
 const login = require('../Services/Users/Login')
 const updateUser = require('../Services/Users/UpdateUser')
@@ -13,10 +9,10 @@ router.post('/Register',(req, res)=>{
     var result = register(req, res);
     result
     .then(user=>{
-        console.log(user);
+        res.send(user)
     })
     .catch(err=>{
-        console.log(err);
+        res.send(err)
     })
 })
 
