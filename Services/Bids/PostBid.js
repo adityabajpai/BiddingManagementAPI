@@ -22,7 +22,7 @@ function postBid(req, res){
                 })
                 bid.save()
                 .then(result=>{
-                    console.log(result);
+                    console.log("PostBid",result);
                     const message = {
                         status: 200,
                         message: 'Bid Posted Successfully',
