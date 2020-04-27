@@ -2,10 +2,6 @@ const mongoose = require('mongoose');
 
 const userSchema = mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    user_id: {
-        type: String,
-        require: true
-    },
     user_email: {
         type: String,
         require: true
@@ -39,6 +35,14 @@ const userSchema = mongoose.Schema({
         require: true
     },
     user_totalBidWins: {
+        type: String,
+        require: true
+    },
+    verified: {
+        type: String,
+        default: "0"
+    },
+    randomNumber: {
         type: String,
         require: true
     }

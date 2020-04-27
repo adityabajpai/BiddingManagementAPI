@@ -21,6 +21,7 @@ io.on('connection',(socket)=>{
     })
 })
 
+
 const customerRouter = require('./Controller/UserRoutes');
 const productRouter = require('./Controller/ProductRoutes');
 const bidRoutes = require('./Controller/BidRoutes');

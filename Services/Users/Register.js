@@ -1,6 +1,13 @@
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
+
 const User = require('../../Model/User');
+const randNumber = require('../../Services/RandomNumber/RandomNumber')
+
+const sendMail = require('../../Controller/Verification').sendMail;
+const randomNumber = require('../../Controller/Verification').randomNumber;
+
+console.log("randomNumber", randomNumber);
 
 function register(req, res){
     return new Promise(function(resolve, reject){
@@ -16,33 +23,28 @@ function register(req, res){
                     status: 209,
                     message: 'Email already registered'
                 }
-                // res.status(209).json({
-                //     message: 'Email already register'
-                // })
                 reject(error);
             }
             else{
                 console.log("new mail id");
-                User.find()
-                .exec()
-                .then(totalUser=>{
-                    console.log("user", totalUser);
-                    bcrypt.hash(req.body.user_pswd,10,(err,hash)=>{
-                        if(err){
-                            const error = {
-                                status: 500,
-                                message: 'Internal Server Error'
-                            }
-                            // res.status(500).json({
-                            //     message: 'Internal Server Error'
-                            // })
-                            reject(error);
+                bcrypt.hash(req.body.user_pswd,10,(err,hash)=>{
+                    if(err){
+                        const error = {
+                            status: 500,
+                            message: 'Internal Server Error'
                         }
-                        else{
+                        reject(error);
+                    }
+                    else{
+                        // Random Number save
+                        var id = new mongoose.Types.ObjectId()
+                        console.log("id",id);
+                        var result_randomNumber = randNumber(id, randomNumber);
+                        result_randomNumber
+                        .then(res=>{
                             console.log("new user created");
                             const user = new User({
-                                _id: new mongoose.Types.ObjectId(),
-                                user_id: totalUser.length.toString(),
+                                _id: id,
                                 user_email: req.body.user_email,
                                 user_pswd: hash,
                                 user_address: req.body.user_address,
@@ -51,44 +53,60 @@ function register(req, res){
                                 user_stateDetails: req.body.user_stateDetails,
                                 user_mobile: req.body.user_mobile,
                                 user_totalBids: "0",
-                                user_totalBidWins: "0"
+                                user_totalBidWins: "0",
+                                randomNumber: randomNumber
                             })
-                            console.log("new_user",user);
-                            user.save()
-                            .then(result=>{
-                                const message = {
-                                    status: 200,
-                                    message: 'User Register Successfully',
-                                    user: {
-                                        _id: result._id,
-                                        user_id: result.user_id,
-                                        user_email: result.user_email,
-                                        user_pswd: result.user_pswd,
-                                        user_address: result.user_address,
-                                        user_address2: result.user_address2,
-                                        user_city: result.user_city,
-                                        user_stateDetails: result.user_stateDetails,
-                                        user_mobile: result.user_mobile,
-                                        user_totalBids: result.user_totalBids,
-                                        user_totalBidWins: result.user_totalBidWins
-                                    } 
+                            const mailResponse = sendMail(user.user_email)
+                            mailResponse
+                            .then(response=>{
+                                console.log("response ",response);
+                                console.log("new_user",user);
+                                user.save()
+                                .then(result=>{
+                                    const message = {
+                                        status: 200,
+                                        message: 'User Register Successfully',
+                                        user: {
+                                            _id: result._id,
+                                            user_id: result.user_id,
+                                            user_email: result.user_email,
+                                            user_pswd: result.user_pswd,
+                                            user_address: result.user_address,
+                                            user_address2: result.user_address2,
+                                            user_city: result.user_city,
+                                            user_stateDetails: result.user_stateDetails,
+                                            user_mobile: result.user_mobile,
+                                            user_totalBids: result.user_totalBids,
+                                            user_totalBidWins: result.user_totalBidWins
+                                        } 
+                                    }
+                                    resolve(message)
+                                })
+                                .catch(err=>{
+                                    console.log(err);
+                                    const error = {
+                                        status: 500,
+                                        err: err
+                                    }
+                                    reject(error)
+                                })
+                            })
+                            .catch(error=>{
+                                console.log("Error while sending Verification Code");
+                                const err = {
+                                    status: 404,
+                                    message: 'Email not found',
+                                    error: error
                                 }
-                                // res.status(200).json({
-                                    
-                                // })
-                                resolve(message)
+                                reject(err)
                             })
-                            .catch(err=>{
-                                console.log(err);
-                                const error = {
-                                    status: 500,
-                                    err: err
-                                }
-                                // res.send(err)
-                                reject(error)
-                            })
-                        }
-                    })
+                        })
+                        .catch(err=>{
+                            console.log("Error while saving random Number");
+                            console.log(err);
+                            reject(err)
+                        })
+                    }
                 })
             }
         })

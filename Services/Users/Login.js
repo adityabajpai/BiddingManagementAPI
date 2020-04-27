@@ -16,46 +16,53 @@ function login(req){
                 reject(msg)
             }
             else{
-                bcrypt.compare(req.body.user_pswd, user.user_pswd, (err, result)=>{
-                    if(err){
-                        // mail id exist but some error occurred
-                        console.log('incorrect password');
-                        const msg = {
-                            status: 403,
-                            message: 'incorrect password'
-                        }
-                        reject(msg)
+                if(user.verified==="0"){
+                    const msg = {
+                        message: 'User not validated'
                     }
-                    else{
-                        console.log("result",result);
-                        if(result){
-                            const token = jsonwebtoken.sign({
-                                user_email: user.user_email,
-                                _id: user._id
-                            }, process.env.secret,
-                            {
-                                expiresIn: "1h"
-                            })
-                            const res = {
-                                status: 200,
-                                message: 'Auth successful',
-                                token: token,
-                                type: user.user_type
+                    reject(msg)
+                } else {
+                    bcrypt.compare(req.body.user_pswd, user.user_pswd, (err, result)=>{
+                        if(err){
+                            // mail id exist but some error occurred
+                            console.log('incorrect password');
+                            const msg = {
+                                status: 403,
+                                message: 'incorrect password'
                             }
-                            resolve(res)
-                            // return res.status(200).json({
-                            //     message: 'Auth successful',
-                            //     token: token,
-                            //     type: user.user_type
-                            // })
+                            reject(msg)
                         }
-                        const msg = {
-                            status: 401,
-                            message: 'Auth failed'
+                        else{
+                            console.log("result",result);
+                            if(result){
+                                const token = jsonwebtoken.sign({
+                                    user_email: user.user_email,
+                                    _id: user._id
+                                }, process.env.secret,
+                                {
+                                    expiresIn: "1h"
+                                })
+                                const res = {
+                                    status: 200,
+                                    message: 'Auth successful',
+                                    token: token,
+                                    type: user.user_type
+                                }
+                                resolve(res)
+                                // return res.status(200).json({
+                                //     message: 'Auth successful',
+                                //     token: token,
+                                //     type: user.user_type
+                                // })
+                            }
+                            const msg = {
+                                status: 401,
+                                message: 'Auth failed'
+                            }
+                            reject(msg)
                         }
-                        reject(msg)
-                    }
-                })
+                    })
+                }
             }
         })
         .catch(err=>{
