@@ -25,6 +25,7 @@ io.on('connection',(socket)=>{
 const customerRouter = require('./Controller/UserRoutes');
 const productRouter = require('./Controller/ProductRoutes');
 const bidRoutes = require('./Controller/BidRoutes');
+const verifyRoutes = require('./Controller/VerifyRoutes');
 const connection = require('./DatabaseConnection/dbConnection').mongoDBConnection();
 
 const swaggerDocument = yamljs.load('./swagger.yaml');
@@ -43,6 +44,7 @@ app.use(cors());
 app.use('/customers',customerRouter);
 app.use('/products',productRouter);
 app.use('/bids',bidRoutes);
+app.use('/verificationCode', verifyRoutes);
 
 app.get('/',(req,res)=>{
     res.send(`Server is running at port ${PORT}`)

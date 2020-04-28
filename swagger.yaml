@@ -202,7 +202,7 @@ paths:
         404:
           description: Product Not Found
   
-
+  
   /bids/Bid:
     post:
       tags:
@@ -260,6 +260,27 @@ paths:
         500:
           description: Internal Server Error
     x-swagger-router-controller: router
+    
+  /verificationCode/verification:
+    post:
+      tags:
+      - Verification Code
+      summary: Send Verification Number
+      description: Enter user id at which Verification Number to be send
+      parameters:
+      - name: body
+        in: body
+        description: Details of user id at which Verification Number to be send
+        required: true
+        schema: 
+         $ref: '#/definitions/Random'
+      responses:
+        200:
+          description: Verification Code send successfully
+        500:
+          description: Internal Server Error
+    
+      deprecated: false
     
 definitions:
   UserRegister:
@@ -366,4 +387,13 @@ definitions:
       bid_price:
         type: string
       product_id:
+        type: string
+  Random:
+    type: object
+    required:
+      - user_id
+    properties:
+      user_id:
+        type: string
+      user_email:
         type: string
