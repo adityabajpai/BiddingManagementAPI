@@ -12,6 +12,7 @@ router.post('/Product', upload.single('product_img'), (req,res)=>{
     result
     .then(product=>{
             res.status(200).json({
+            status: 200,
             message: 'Product Uploaded Successfully',
             user: {
                 _id: product._id,
@@ -30,24 +31,33 @@ router.post('/Product', upload.single('product_img'), (req,res)=>{
     .catch(err=>{
         console.log(err.status);
         console.log(err);
+        res.status(500).json({
+            status: 500,
+            message: 'Something went wrong...',
+            error: err
+        })
     })
 })
 
-router.get('/Products',(req,res)=>{
-    var result = getProduct(req, res);
-
+router.get('/Products', (req,res)=>{
+    var result =  getProduct();
+    console.log(result);
     result
     .then(products=>{
         console.log("success");
         console.log(products);
         res.status(200).json({
-            count: products.length,
+            status: 200,
             product: products
         })
     })
     .catch(err=>{
         console.log("error");
         console.log(err);
+        res.status(500).json({
+            status: 500,
+            error: err
+        })
     })
 })
 
@@ -58,10 +68,14 @@ router.patch('/Product/:productId',(req,res)=>{
     result
     .then(product=>{
         console.log("success 1");
-        res.send(product)
+        res.status(200).json({
+            status: 200,
+            message: 'Product Updated Successfully'
+        })
     })
     .catch(err=>{
         res.status(500).json({
+            status: 500,
             error: err
         })
     })
@@ -75,12 +89,16 @@ router.delete('/Product/:Id',(req,res)=>{
     result
     .then(product=>{
         res.status(200).json({
-            message: 'Product deleted',
-            response: product
+            status: 200,
+            message: 'Product deleted'
         })
     })
     .catch(err=>{
         console.log(err);
+        res.status(500).json({
+            status: 500,
+            message: 'Something went wrong...'
+        })
     })
 })
 

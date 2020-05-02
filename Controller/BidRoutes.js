@@ -5,6 +5,7 @@ const maxBid = require('../Services/Bids/MaxBid');
 const postBid = require('../Services/Bids/PostBid');
 
 router.post('/Bid',(req, res)=>{
+    // console.log(req.body);
     var result = postBid(req, res);
     result
     .then(bid=>{

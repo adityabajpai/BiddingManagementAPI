@@ -5,6 +5,7 @@ const cors = require('cors');
 const yamljs = require('yamljs');
 const socketio = require('socket.io')
 const http = require('http')
+var methodOverride = require('method-override');
 
 var app = express();
 const server = http.createServer(app)
@@ -27,10 +28,9 @@ const productRouter = require('./Controller/ProductRoutes');
 const bidRoutes = require('./Controller/BidRoutes');
 const verifyRoutes = require('./Controller/VerifyRoutes');
 const connection = require('./DatabaseConnection/dbConnection').mongoDBConnection();
+console.log(connection);
 
 const swaggerDocument = yamljs.load('./swagger.yaml');
-
-console.log(connection);
 
 var PORT = process.env.port || 4000;
 
@@ -40,6 +40,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(cors());
+app.use(methodOverride());
 
 app.use('/customers',customerRouter);
 app.use('/products',productRouter);

@@ -2,7 +2,7 @@ const Product = require('../../Model/Product');
 var date = new Date(Date.now());
 var todayDate = date.toLocaleDateString();
 
-function getProduct(req, res){
+function getProduct(){
     return new Promise(function(resolve, reject){
         console.log("todayDate", todayDate);
         Product.find()
@@ -10,6 +10,7 @@ function getProduct(req, res){
         .select()
         .exec()
         .then(products=>{
+            console.log(products);
             resolve(products)
         })
         .catch(err=>{
