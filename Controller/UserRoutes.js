@@ -7,7 +7,7 @@ const login = require('../Services/Users/Login')
 const updateUser = require('../Services/Users/UpdateUser')
 const deleteUser = require('../Services/Users/DeleteUser')
 
-router.post('/Register', async(req, res)=>{
+router.post('/Register', (req, res)=>{
     // const validation = new Validator(req.body,{
     //     "user_email": 'required|email',
     //     "user_pswd": 'required',
@@ -31,6 +31,7 @@ router.post('/Register', async(req, res)=>{
 })
 
 router.post('/Login',(req,res)=>{
+    console.log(req.body);
     var result = login(req, res)
     result
     .then(user=>{
@@ -56,6 +57,7 @@ router.patch('/User/:userId',(req, res)=>{
 
 //delete user
 router.delete('/User/:Id', (req, res)=>{
+    console.log('deleteUser')
     var result = deleteUser(req, res);
     result
     .then(user=>{

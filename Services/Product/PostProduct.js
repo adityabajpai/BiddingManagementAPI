@@ -1,11 +1,10 @@
 const Product = require('../../Model/Product');
 var path = require('path');
 const mongoose = require('mongoose');
-var parentDirectory = path.resolve(__dirname, '../..');
 
 function PostProduct(req){
-    console.log(parentDirectory);
     return new Promise(function(resolve, reject){
+        var parentDirectory = path.resolve(__dirname, '../..')
         parentDirectory = parentDirectory+'\\'+req.file.path;
         Product.find()
         .exec()
