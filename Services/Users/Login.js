@@ -38,7 +38,7 @@ function login(req){
                                 const token = jsonwebtoken.sign({
                                     user_email: user.user_email,
                                     _id: user._id
-                                }, process.env.secret,
+                                }, 'secret',
                                 {
                                     expiresIn: "1h"
                                 })

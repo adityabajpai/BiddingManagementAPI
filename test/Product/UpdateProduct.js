@@ -1,49 +1,23 @@
-// var sinon = require('sinon')
-// var chai = require('chai')
-// var expect = chai.expect
+var app = require('../../index').app
+var request = require('supertest')
 
-// var mongoose = require('mongoose')
-
-// var Product = require('../../Model/Product')
-
-// describe("Update a new product by id", function(){
-//     it("should updated a product by id", function(done){
-//         var ProductMock = sinon.mock(new Product({_id: new mongoose.Types.ObjectId(),
-//             product_name: 'name',
-//             product_bidding_price: 'product_bidding_price',
-//             product_description: 'product_description',
-//             product_bidding_EndDate: 'product_bidding_EndDate',
-//             product_userId: 'product_userId',
-//             product_userEmail: 'abc@gmail.com'
-//         }));
-//         var product = ProductMock.object;
-//         var expectedResult = { status: 200 };
-//         ProductMock.expects('updateOne').withArgs({_id: '5e8af4bb30e96b241094acd9'}).yields(null, expectedResult);
-//         product.updateOne(function (err, result) {
-//             ProductMock.verify();
-//             ProductMock.restore();
-//             expect(result.status).to.equal(200);
-//             done();
-//         });
-//     });
-//     // Test will pass if the product is not updated based on an ID
-//     it("should return error if update action is failed", function(done){
-//         var ProductMock = sinon.mock(new Product({_id: new mongoose.Types.ObjectId(),
-//             product_name: 'name',
-//             product_bidding_price: 'product_bidding_price',
-//             product_description: 'product_description',
-//             product_bidding_EndDate: 'product_bidding_EndDate',
-//             product_userId: 'product_userId',
-//             product_userEmail: 'abc@gmail.com'
-//         }));
-//         var product = ProductMock.object;
-//         var expectedResult = { status: 500 };
-//         ProductMock.expects('updateOne').withArgs({_id: '5e8af4bb30e96b241094acd9'}).yields(expectedResult, null);
-//         product.updateOne(function (err, result) {
-//             ProductMock.verify();
-//             ProductMock.restore();
-//             expect(err.status).to.equal(500);
-//             done();
-//         });
-//     });
-// });
+describe('PATCH /products/Product/:productId', function() {
+    const product = {
+        product_name: 'Fourth Product',
+        product_bidding_price: '450',
+        product_description: 'This is fourth product',
+        product_bidding_EndDate: '9/9/2020',
+    }
+    it('update the product', function(done) {
+        request(app)
+        .patch('/products/Product/5eae33dc98c04534c06db368')
+        .send(product)
+        .set('Accept', '*/*')
+        .expect('Content-Type', 'application/json; charset=utf-8')
+        .expect(200)
+        .end(function(err, res) {
+            if (err) return done(err);
+            done();
+        });
+    })
+})

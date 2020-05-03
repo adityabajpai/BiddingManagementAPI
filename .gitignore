@@ -3,3 +3,5 @@
 /sendgrid.env
 /nodemon.json
 /.env
+"uploads"
+/uploads

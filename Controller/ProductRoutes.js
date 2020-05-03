@@ -14,7 +14,7 @@ router.post('/Product', upload.single('product_img'), (req,res)=>{
             res.status(200).json({
             status: 200,
             message: 'Product Uploaded Successfully',
-            user: {
+            product: {
                 _id: product._id,
                 product_id: product.product_id,
                 product_name: product.product_name,

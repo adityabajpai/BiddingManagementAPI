@@ -3,6 +3,7 @@ const User = require('../../Model/User');
 function deleteUser(req){
     return new Promise(function(resolve, reject){
         const id = req.params.Id;
+        console.log("id", id)
         User.deleteOne({_id: id})
         .exec()
         .then(result=>{
