@@ -4,6 +4,7 @@ var request = require('supertest')
 describe('PATCH /customers/User/:userId', function() {
     it('update User', function(done) {
         const updateUser = {
+            user_email: 'adityabajpai0303@gmail.com',
             user_address: 'B-238',
             user_address2: 'Awas Vikas Colony',
             user_city: "Sitapur",

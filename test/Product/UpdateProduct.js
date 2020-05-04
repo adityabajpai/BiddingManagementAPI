@@ -16,8 +16,8 @@ describe('PATCH /products/Product/:productId', function() {
         .expect('Content-Type', 'application/json; charset=utf-8')
         .expect(200)
         .end(function(err, res) {
-            if (err) return done(err);
-            done();
+            if (err) return done(err)
+            done()
         });
     })
 })
