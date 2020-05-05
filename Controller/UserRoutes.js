@@ -8,17 +8,6 @@ const updateUser = require('../Services/Users/UpdateUser')
 const deleteUser = require('../Services/Users/DeleteUser')
 
 router.post('/Register', (req, res)=>{
-    // const validation = new Validator(req.body,{
-    //     "user_email": 'required|email',
-    //     "user_pswd": 'required',
-    //     "user_address": 'required',
-    //     "user_address2": 'required',
-    //     "user_city": 'required',
-    //     "user_stateDetails": 'required',
-    //     "user_mobile": 'required'
-    // })
-    // const matched = await validation.check()
-    // console.log(matched);
     
     var result = register(req, res);
     result
