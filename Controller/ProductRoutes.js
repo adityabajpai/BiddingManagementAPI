@@ -1,5 +1,6 @@
 const express = require('express');
 var multer  = require('multer');
+var validator = require('validator')
 const router = express.Router();
 var upload = multer({ dest: 'uploads/' })
 const getProduct = require('../Services/Product/GetProduct');
@@ -8,6 +9,16 @@ const updateProduct = require('../Services/Product/UpdateProduct');
 const deleteProduct = require('../Services/Product/DeleteProduct')
 
 router.post('/Product', upload.single('product_img'), (req,res)=>{
+    // console.log("request", req.body)
+    // const product_bidding_priceCheck = isNaN(req.body.product_bidding_price)
+    // console.log("product_bidding_priceCheck ",product_bidding_priceCheck)
+    // const product_bidding_EndDateCheck = ! isNaN((new Date(req.body.product_bidding_EndDate)).getMonth())
+    // console.log("product_bidding_EndDateCheck ",product_bidding_EndDateCheck)
+    // const emailCheck = validator.isEmail(req.body.user_email)
+    // console.log("emailCheck", emailCheck);
+    // const description = req.body.product_description
+    // const product_descriptionCheck = description.length()
+    // console.log("product_descriptionCheck ",product_descriptionCheck)
     var result = postProduct(req);
     result
     .then(product=>{

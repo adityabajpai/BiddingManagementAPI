@@ -347,6 +347,8 @@ definitions:
       - product_bidding_price
       - product_description
       - product_bidding_EndDate
+      - product_userId
+      - product_userEmail
     properties:
       product_name:
         type: string
@@ -355,6 +357,10 @@ definitions:
       product_description:
         type: string
       product_bidding_EndDate:
+        type: string
+      product_userId:
+        type: string
+      product_userEmail:
         type: string
   ProductUpdate:
     type: object

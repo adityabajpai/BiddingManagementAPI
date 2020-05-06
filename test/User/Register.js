@@ -7,7 +7,7 @@ describe('POST /customers/Register', function(){
         const user = {
                 _id: new mongoose.Types.ObjectId(),
                 user_email: 'abc@gmail.com',
-                user_pswd: 'abc',
+                user_pswd: 'abc_aa_0303',
                 user_address: 'address',
                 user_address2: 'address2',
                 user_city: 'city',
